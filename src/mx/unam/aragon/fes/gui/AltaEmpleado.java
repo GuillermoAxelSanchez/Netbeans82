@@ -12,15 +12,14 @@ import mx.unam.aragon.fes.Direccion;
 import mx.unam.aragon.fes.Empleado;
 import mx.unam.aragon.fes.persistencia.ArchivoEmpleado;
 
-
-
 /**
  *
  * @author unam
  */
 public class AltaEmpleado extends javax.swing.JFrame {
+
     private ArrayList<Empleado> lista;
-    
+    private int indice;
 
     /**
      * Creates new form AltaEmpleado
@@ -28,6 +27,7 @@ public class AltaEmpleado extends javax.swing.JFrame {
     public AltaEmpleado() {
         initComponents();
         lista = new ArrayList<Empleado>();
+        indice = 0;
     }
 
     /**
@@ -77,6 +77,7 @@ public class AltaEmpleado extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -312,8 +313,18 @@ public class AltaEmpleado extends javax.swing.JFrame {
         });
 
         jButton2.setText("Cargar");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
 
         jButton3.setText(">>");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton3MouseClicked(evt);
+            }
+        });
 
         jButton4.setText("<<");
 
@@ -331,6 +342,9 @@ public class AltaEmpleado extends javax.swing.JFrame {
                 jButton6MouseClicked(evt);
             }
         });
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel14.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -353,13 +367,19 @@ public class AltaEmpleado extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel14)
+                .addGap(448, 448, 448))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addComponent(jLabel14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
@@ -377,21 +397,20 @@ public class AltaEmpleado extends javax.swing.JFrame {
         // TODO add your handling code here:
         System.out.println("Nuevo empleado!!!");
         this.limpiarFormulario();
-        this.jButton6.setEnabled(true); 
-        
-       
-        
+        this.jButton6.setEnabled(true);
+
+
     }//GEN-LAST:event_jButton5MouseClicked
 
     private void jButton6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseClicked
         // TODO add your handling code here:
-                
-         Empleado emp= new Empleado();
-        emp.setNombre( this.jTextField1.getText() );
-        emp.setApPaterno(this.jTextField2.getText() );
-        emp.setApMaterno( jTextField3.getText() );
-        emp.setEdad( Integer.parseInt( jTextField4.getText()  )  );  // converte a int
-        emp.setCurp( jTextField5.getText());
+
+        Empleado emp = new Empleado();
+        emp.setNombre(this.jTextField1.getText());
+        emp.setApPaterno(this.jTextField2.getText());
+        emp.setApMaterno(jTextField3.getText());
+        emp.setEdad(Integer.parseInt(jTextField4.getText()));  // converte a int
+        emp.setCurp(jTextField5.getText());
         emp.setDomicilio(new Direccion());
         emp.getDomicilio().setCalle(this.jTextField6.getText());
         emp.getDomicilio().setNumero(this.jTextField7.getText());
@@ -405,63 +424,107 @@ public class AltaEmpleado extends javax.swing.JFrame {
         emp.setHorasExtra(Integer.parseInt(this.jTextField14.getText()));
         int confirmar = JOptionPane.showConfirmDialog(this, "¿Deseas guardar estos datos?");
         //subirlo a memoria
-        System.out.println("boton"+ confirmar);
-        if (confirmar==0){
-         lista.add(emp);
-        }else{
-           JOptionPane.showMessageDialog(this, "No se guardó el empleado!!!!");
+        System.out.println("boton" + confirmar);
+        if (confirmar == 0) {
+            lista.add(emp);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se guardó el empleado!!!!");
         }
-        
-        System.out.println("Empleado en el arreglo = "+ lista.size());
+
+        System.out.println("Empleado en el arreglo = " + lista.size());
         limpiarFormulario();
         jButton6.setEnabled(false);
-       
-        
-        
-        
+
+
     }//GEN-LAST:event_jButton6MouseClicked
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         // TODO add your handling code here:
-        ArchivoEmpleado persistencia= new ArchivoEmpleado();
+        ArchivoEmpleado persistencia = new ArchivoEmpleado();
         JFileChooser jfc = new JFileChooser();
         jfc.showSaveDialog(this);
         String archivo = jfc.getSelectedFile().getAbsolutePath();
-        System.out.println("Ruta seleccionada es: "+archivo);
+        System.out.println("Ruta seleccionada es: " + archivo);
         persistencia.setArchivo(archivo);
         try {
             persistencia.guardarEmpleados(lista);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }//GEN-LAST:event_jButton1MouseClicked
 
-     
-    private void limpiarFormulario(){
-      this.jTextField1.setText("");
-      this.jTextField2.setText("");
-      this.jTextField3.setText("");
-      this.jTextField4.setText("0");
-      this.jTextField5.setText("");
-      this.jTextField6.setText("");
-      this.jTextField7.setText("");
-      this.jTextField8.setText("");
-      this.jTextField9.setText("");
-      this.jTextField10.setText("");
-      this.jTextField10.setColumns(10);
-      this.jTextField11.setText("0");
-      this.jTextField11.setColumns(10);
-      this.jTextField12.setText("");
-      this.jTextField13.setText("0.0");
-      this.jTextField14.setText("0");
-      this.jTextField15.setText("");
-      
-      
-      
-      
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        // TODO add your handling code here:
+        int respuesta = JOptionPane.showConfirmDialog(this, "Esta acción borrará los datos acruales. ¿Estás seguro de continuar?");
+        if (respuesta == 0) {//constantes de clase
+            //leer datos del archivo
+            //subir al array list
+            //El primer elemento se pondrá en el formulario
+            ArchivoEmpleado persistencia = new ArchivoEmpleado();
+            JFileChooser jfc = new JFileChooser();
+            jfc.showOpenDialog(this);
+            persistencia.setArchivo(jfc.getSelectedFile().getAbsolutePath());
+            this.lista = persistencia.leerEmpleados();
+            this.limpiarFormulario();
+            this.indice = 0;
+            this.llenarFormulario(this.indice);
+
+        } else {
+        }
+    }//GEN-LAST:event_jButton2MouseClicked
+
+    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+        //Falta hacer control de tamaño
+        if (this.indice < this.lista.size() -1) {
+            this.indice++;
+        } else {
+            this.indice = 0;
+        }
+        this.jLabel14.setText("" + this.indice);
+        llenarFormulario(indice);
+    }//GEN-LAST:event_jButton3MouseClicked
+
+    private void llenarFormulario(int indice) {
+        if (lista.size() > 0) {
+            Empleado e = lista.get(indice);
+            this.jTextField1.setText(e.getNombre());
+            this.jTextField2.setText(e.getApPaterno());
+            this.jTextField3.setText(e.getApMaterno());
+            this.jTextField4.setText("" + e.getEdad());
+            this.jTextField5.setText(e.getCurp());
+            this.jTextField6.setText(e.getDomicilio().getCalle());
+            this.jTextField7.setText(e.getDomicilio().getNumero());
+            this.jTextField8.setText(e.getDomicilio().getColonia());
+            this.jTextField9.setText(e.getDomicilio().getDelegacion());
+            this.jTextField10.setText(e.getDomicilio().getEstado());
+            this.jTextField15.setText(e.getDomicilio().getCp());
+            //this.jTextField11.setText(e.getDomicilio().get);
+
+        }
     }
-    
+
+    private void limpiarFormulario() {
+        this.jTextField1.setText("");
+        this.jTextField2.setText("");
+        this.jTextField3.setText("");
+        this.jTextField4.setText("0");
+        this.jTextField5.setText("");
+        this.jTextField6.setText("");
+        this.jTextField7.setText("");
+        this.jTextField8.setText("");
+        this.jTextField9.setText("");
+        this.jTextField10.setText("");
+        this.jTextField10.setColumns(10);
+        this.jTextField11.setText("0");
+        this.jTextField11.setColumns(10);
+        this.jTextField12.setText("");
+        this.jTextField13.setText("0.0");
+        this.jTextField14.setText("0");
+        this.jTextField15.setText("");
+
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -509,6 +572,7 @@ public class AltaEmpleado extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
